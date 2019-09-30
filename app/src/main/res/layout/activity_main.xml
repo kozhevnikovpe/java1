@@ -6,15 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textAlignment="center"
-        android:paddingVertical="5dp"
-        android:background="#000000"
-        android:textColor="#ffffff"
-        android:text="@string/weather"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="156dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp">
+
+            <Switch
+                android:id="@+id/switchHumidity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/humidity"
+                android:layout_marginBottom="10dp"/>
+
+            <Switch
+                android:id="@+id/switchWind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wind" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/city" />
+
+            <Button
+                android:id="@+id/showWeather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/choose_city" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
