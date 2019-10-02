@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/layout_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="200dp"
@@ -23,36 +26,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/humidity"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                style="@style/whiteBigText" />
 
             <Switch
                 android:id="@+id/switchWind"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/wind" />
+                android:text="@string/wind"
+                style="@style/whiteBigText" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:minHeight="40dp">
 
             <EditText
                 android:id="@+id/editCity"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:hint="@string/city"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:background="@drawable/edittext"
+                android:padding="7dp"
+                android:textColor="#4C0B8D"
+                android:textStyle="bold"
+                />
 
             <Button
                 android:id="@+id/showWeather"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/choose_city" />
+                android:text="@string/choose_city"
+                android:textColor="#FFC107"
+                android:background="@drawable/button"
+                />
         </LinearLayout>
 
     </LinearLayout>
