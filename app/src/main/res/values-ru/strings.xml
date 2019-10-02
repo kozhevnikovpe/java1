@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="weather">Погода</string>
+    <string name="choose_city">выбрать город</string>
+    <string name="city">Город</string>
+    <string name="app_name">Погода</string>
+    <string name="humidity">Показать влажность</string>
+    <string name="wind">Показать силу ветра</string>
+    <string name="cityLabel">Город: </string>
+
+    <string name="temperatureLabel">Температура: </string>
+    <string name="temperatureValue">+15 град</string>
+
+    <string name="humidityLabel">Влажность: </string>
+    <string name="humidityValue">67%</string>
+
+    <string name="windLabel">Ветер: </string>
+    <string name="windValue">западный 18 м/с</string>
 </resources>

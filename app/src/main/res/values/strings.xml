@@ -1,4 +1,22 @@
 <resources>
-    <string name="app_name" translatable="false">My Application</string>
+    <string name="app_name">Weather</string>
     <string name="weather">Weather</string>
+
+    <string name="city">City</string>
+    <string name="choose_city">choose city</string>
+    <string name="humidity">show humidity</string>
+    <string name="wind">show wind</string>
+
+    <string name="cityParam" translatable="false">city</string>
+    <string name="humidityParam" translatable="false">humidity</string>
+    <string name="windParam" translatable="false">wind</string>
+
+    <string name="cityLabel">City: </string>
+    <string name="temperatureLabel">Temperature: </string>
+    <string name="humidityLabel">Humidity: </string>
+    <string name="windLabel">Wind: </string>
+
+    <string name="temperatureValue">+15°</string>
+    <string name="humidityValue">67%</string>
+    <string name="windValue">west 18 m/s</string>
 </resources>
