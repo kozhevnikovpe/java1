@@ -16,4 +16,12 @@
 
     <string name="windLabel">Ветер: </string>
     <string name="windValue">западный 18 м/с</string>
+    <string name="pressureValue">740 мм</string>
+
+    <string-array name="cities">
+        <item>Москва</item>
+        <item>Санкт-Петербург</item>
+        <item>Новосибирск</item>
+        <item>Нижний Новгород</item>
+    </string-array>
 </resources>
