@@ -1,4 +1,4 @@
-package com.pavelekozhevnikov.homework1.Fragments;
+package com.pavelekozhevnikov.homework1.Fragment;
 
 
 import android.content.Intent;
@@ -24,7 +24,7 @@ import com.pavelekozhevnikov.homework1.WeatherActivityFragment;
 
 import java.util.Objects;
 
-import static com.pavelekozhevnikov.homework1.Fragments.WeatherFragment.WEATHER_INFO;
+import static com.pavelekozhevnikov.homework1.Fragment.WeatherFragment.WEATHER_INFO;
 
 public class CitiesFragment extends Fragment {
     private boolean isExistWeatherFrame;  // Можно ли расположить рядом фрагмент с погодой

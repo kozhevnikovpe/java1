@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import com.pavelekozhevnikov.homework1.Fragments.WeatherFragment;
+import com.pavelekozhevnikov.homework1.Fragment.WeatherFragment;
 
 public class WeatherActivityFragment extends AppCompatActivity {
 

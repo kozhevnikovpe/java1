@@ -1,22 +1,32 @@
-package com.pavelekozhevnikov.homework1.Fragments;
+package com.pavelekozhevnikov.homework1.Fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pavelekozhevnikov.homework1.Adapter.RecycledViewAdapter;
+import com.pavelekozhevnikov.homework1.Model.WeatherCardInfo;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.R;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class WeatherFragment extends Fragment {
     static final String WEATHER_INFO = "weatherInfo";
@@ -31,8 +41,7 @@ public class WeatherFragment extends Fragment {
     }
 
     WeatherInfo getWeatherInfo() {
-        WeatherInfo weatherInfo = (WeatherInfo)getArguments().getSerializable(WEATHER_INFO);
-        return weatherInfo;
+        return (WeatherInfo) Objects.requireNonNull(getArguments()).getSerializable(WEATHER_INFO);
     }
 
     @Override
@@ -50,6 +59,7 @@ public class WeatherFragment extends Fragment {
         setupTemperature(view);
         setupHumidity(view);
         setupWind(view);
+        initRecyclerView(view);
 
         Toast.makeText(getActivity(),"onViewCreated" ,Toast.LENGTH_SHORT).show();
     }
@@ -79,6 +89,36 @@ public class WeatherFragment extends Fragment {
         TextView cityLabel = view.findViewById(R.id.cityLabel);
         cityLabel.setText(String.format("%s %s", getResources().getString(R.string.cityLabel), weatherInfo.cityName));
     }
+
+    private WeatherCardInfo[] getFutureWeatherInfo(){
+        String[] wTemperature = Objects.requireNonNull(getActivity()).getResources().getStringArray(R.array.w_temperature);
+        String[] wTIcons = getActivity().getResources().getStringArray(R.array.w_icons);
+        WeatherCardInfo[] result = new WeatherCardInfo[wTemperature.length];
+
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat(getActivity().getResources().getString(R.string.dateFormat));
+        for(int $i=0; $i<wTemperature.length; $i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, $i);
+            Date date = calendar.getTime();
+            String icon = wTemperature.length==wTIcons.length?wTIcons[$i]:null;
+            result[$i] = new WeatherCardInfo(dateFormat.format(date),wTemperature[$i], icon);
+        }
+        return result;
+    }
+
+    private void initRecyclerView(View view){
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Эта установка служит для повышения производительности системы
+        recyclerView.setHasFixedSize(true);
+
+        // Установим адаптер
+        RecycledViewAdapter adapter = new RecycledViewAdapter(getFutureWeatherInfo());
+        recyclerView.setAdapter(adapter);
+    }
+
 
     @Override
     public void onAttach(@NonNull Context context) {

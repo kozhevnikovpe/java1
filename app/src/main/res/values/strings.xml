@@ -30,4 +30,17 @@
 
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="empty" translatable="false">Empty</string>
+    <string name="dateFormat" translatable="false">EEE, d MMM</string>
+
+    <array name="w_icons" translatable="false">
+        <item>windy</item>
+        <item>rainy</item>
+        <item>sunny</item>
+    </array>
+
+    <array name="w_temperature" translatable="false">
+        <item>+10°</item>
+        <item>+12°</item>
+        <item>+15°</item>
+    </array>
 </resources>
