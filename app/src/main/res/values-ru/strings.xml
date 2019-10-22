@@ -17,6 +17,10 @@
     <string name="windLabel">Ветер: </string>
     <string name="windValue">западный 18 м/с</string>
     <string name="pressureValue">740 мм</string>
+    <string name="cityConfirmation">Узнать погоду в городе %s?</string>
+    <string name="confirmBtn">Подтвердить</string>
+    <string name="developer">О разаботчике</string>
+    <string name="hello">Просто привет</string>
 
     <string-array name="cities">
         <item>Москва</item>

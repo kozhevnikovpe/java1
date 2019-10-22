@@ -1,13 +1,11 @@
 package com.pavelekozhevnikov.homework1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.pavelekozhevnikov.homework1.Fragment.WeatherFragment;
 
-public class WeatherActivityFragment extends AppCompatActivity {
+public class WeatherActivityFragment extends BaseThemeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

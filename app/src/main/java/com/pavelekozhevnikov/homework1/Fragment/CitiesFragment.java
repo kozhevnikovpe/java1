@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.R;
 import com.pavelekozhevnikov.homework1.WeatherActivityFragment;
@@ -60,7 +61,16 @@ public class CitiesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 currentWeatherInfo = new WeatherInfo(position, Objects.requireNonNull(getActivity()));
-                showWeather(currentWeatherInfo);
+                //showWeather(currentWeatherInfo);
+                Snackbar.make(view, String.format(getString(R.string.cityConfirmation), listView.getItemAtPosition(position).toString()), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.confirmBtn), new View.OnClickListener(){
+
+                            @Override
+                            public void onClick(View v) {
+                                showWeather(currentWeatherInfo);
+                            }
+                        }).show();
+
             }
         });
     }
