@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cityFontSize">25dp</dimen>
+    <dimen name="weatherIconFontSize">30dp</dimen>
+    <dimen name="weatherParamFontSize">15dp</dimen>
+    <dimen name="weatherParamMargin">15dp</dimen>
+</resources>

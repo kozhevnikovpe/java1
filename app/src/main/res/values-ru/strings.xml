@@ -7,6 +7,7 @@
     <string name="humidity">Показать влажность</string>
     <string name="wind">Показать силу ветра</string>
     <string name="cityLabel">Город: </string>
+    <string name="pressureLabel">Давление: </string>
 
     <string name="temperatureLabel">Температура: </string>
     <string name="temperatureValue">+15 град</string>
@@ -20,12 +21,18 @@
     <string name="cityConfirmation">Узнать погоду в городе %s?</string>
     <string name="confirmBtn">Подтвердить</string>
     <string name="developer">О разаботчике</string>
-    <string name="hello">Просто привет</string>
+    <string name="hello">Ваш город</string>
+    <string name="needLocation">Требуется разрешение на местоположение!</string>
 
     <string-array name="cities">
         <item>Москва</item>
         <item>Санкт-Петербург</item>
         <item>Новосибирск</item>
-        <item>Нижний Новгород</item>
+        <item>Неизвестный город</item>
     </string-array>
+    <string name="errGoogleConnect">Не удалось подключиться к Google Play</string>
+
+    <string name="place_not_found">Город не найден</string>
+    <string name="errGoogleConnectionSusspended">connection susspended</string>
+    <string name="locationDetected">Локация определена</string>
 </resources>

@@ -15,6 +15,7 @@
     <string name="temperatureLabel">Temperature: </string>
     <string name="humidityLabel">Humidity: </string>
     <string name="windLabel">Wind: </string>
+    <string name="pressureLabel">Pressure: </string>
 
     <string name="temperatureValue">+15°</string>
     <string name="humidityValue">67%</string>
@@ -23,9 +24,9 @@
 
     <string-array name="cities">
         <item>Moscow</item>
-        <item>Saint-Petersburg</item>
-        <item>Novosibirsl</item>
-        <item>Nizhniy Norgorod</item>
+        <item>Saint Petersburg</item>
+        <item>Novosibirsk</item>
+        <item>Unknown city</item>
     </string-array>
 
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -51,5 +52,19 @@
     <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
-    <string name="hello">Just hello</string>
+    <string name="hello">Your city</string>
+    <string name="needLocation">Need your location!</string>
+    <string name="errGoogleConnect">Can\'t connect to Google Play Services!</string>
+
+    <string name="place_not_found">Place not found</string>
+    <string name="weather_sunny" translatable="false">&#xf00d;</string>
+    <string name="weather_clear_night" translatable="false">&#xf02e;</string>
+    <string name="weather_foggy" translatable="false">&#xf014;</string>
+    <string name="weather_cloudy" translatable="false">&#xf013;</string>
+    <string name="weather_rainy" translatable="false">&#xf019;</string>
+    <string name="weather_snowy" translatable="false">&#xf01b;</string>
+    <string name="weather_thunder" translatable="false">&#xf01e;</string>
+    <string name="weather_drizzle" translatable="false">&#xf01c;</string>
+    <string name="errGoogleConnectionSusspended">connection susspended</string>
+    <string name="locationDetected">Location detected</string>
 </resources>

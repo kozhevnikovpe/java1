@@ -4,4 +4,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="cityFontSize">30dp</dimen>
+    <dimen name="weatherIconFontSize">50dp</dimen>
+    <dimen name="weatherParamFontSize">20dp</dimen>
+    <dimen name="weatherParamMargin">20dp</dimen>
 </resources>

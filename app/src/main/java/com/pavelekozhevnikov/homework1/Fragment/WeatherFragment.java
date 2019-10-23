@@ -1,35 +1,23 @@
 package com.pavelekozhevnikov.homework1.Fragment;
-
-
-import android.annotation.SuppressLint;
-import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.pavelekozhevnikov.homework1.Adapter.RecycledViewAdapter;
-import com.pavelekozhevnikov.homework1.Model.WeatherCardInfo;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.R;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 public class WeatherFragment extends Fragment {
     static final String WEATHER_INFO = "weatherInfo";
+    private TextView iconLabel;
 
     static WeatherFragment create(WeatherInfo weatherInfo) {
         WeatherFragment f = new WeatherFragment();
@@ -47,7 +35,6 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Toast.makeText(getActivity(),"onCreateView" ,Toast.LENGTH_SHORT).show();
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
@@ -59,23 +46,33 @@ public class WeatherFragment extends Fragment {
         setupTemperature(view);
         setupHumidity(view);
         setupWind(view);
-        initRecyclerView(view);
+        setupPressure(view);
+        setupIcon(view);
+        //initRecyclerView(view);
 
-        Toast.makeText(getActivity(),"onViewCreated" ,Toast.LENGTH_SHORT).show();
+        initViews(view);
+        initFonts();
+    }
+
+    private void initViews(View view) {
+        iconLabel = view.findViewById(R.id.iconLabel);
+    }
+
+    private void initFonts() {
+        Typeface weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/weather.ttf");
+        iconLabel.setTypeface(weatherFont);
     }
 
     private void setupWind(View view) {
         WeatherInfo weatherInfo = getWeatherInfo();
         TextView windLabel = view.findViewById(R.id.windLabel);
         windLabel.setText(String.format("%s %s", getResources().getString(R.string.windLabel),weatherInfo.wind));
-        windLabel.setVisibility(View.VISIBLE);
     }
 
     private void setupHumidity(View view) {
         WeatherInfo weatherInfo = getWeatherInfo();
         TextView humidityLabel = view.findViewById(R.id.humidityLabel);
         humidityLabel.setText(String.format("%s %s", getResources().getString(R.string.humidityLabel), weatherInfo.humidity));
-        humidityLabel.setVisibility(View.VISIBLE);
     }
 
     private void setupTemperature(View view) {
@@ -84,13 +81,25 @@ public class WeatherFragment extends Fragment {
         temperatureLabel.setText(String.format("%s %s", getResources().getString(R.string.temperatureLabel), weatherInfo.temperature));
     }
 
+    private void setupPressure(View view) {
+        WeatherInfo weatherInfo = getWeatherInfo();
+        TextView temperatureLabel = view.findViewById(R.id.pressureLabel);
+        temperatureLabel.setText(String.format("%s %s", getResources().getString(R.string.pressureLabel), weatherInfo.pressure));
+    }
+
+    private void setupIcon(View view) {
+        WeatherInfo weatherInfo = getWeatherInfo();
+        TextView temperatureLabel = view.findViewById(R.id.iconLabel);
+        temperatureLabel.setText(weatherInfo.icon);
+    }
+
     private void setupCity(View view) {
         WeatherInfo weatherInfo = getWeatherInfo();
         TextView cityLabel = view.findViewById(R.id.cityLabel);
-        cityLabel.setText(String.format("%s %s", getResources().getString(R.string.cityLabel), weatherInfo.cityName));
+        cityLabel.setText(weatherInfo.cityName);
     }
 
-    private WeatherCardInfo[] getFutureWeatherInfo(){
+    /*private WeatherCardInfo[] getFutureWeatherInfo(){
         String[] wTemperature = Objects.requireNonNull(getActivity()).getResources().getStringArray(R.array.w_temperature);
         String[] wTIcons = getActivity().getResources().getStringArray(R.array.w_icons);
         WeatherCardInfo[] result = new WeatherCardInfo[wTemperature.length];
@@ -117,66 +126,6 @@ public class WeatherFragment extends Fragment {
         // Установим адаптер
         RecycledViewAdapter adapter = new RecycledViewAdapter(getFutureWeatherInfo());
         recyclerView.setAdapter(adapter);
-    }
+    }*/
 
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        Toast.makeText(context,"onAttach" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Toast.makeText(getActivity(),"onCreate" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Toast.makeText(getActivity(),"onActivityCreated" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Toast.makeText(getActivity(),"onStart" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Toast.makeText(getActivity(),"onResume" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Toast.makeText(getActivity(),"onPause" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Toast.makeText(getActivity(),"onStop" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Toast.makeText(getActivity(),"onDestroyView" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(getActivity(),"onDestroy" ,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Toast.makeText(getActivity(),"onDetach" ,Toast.LENGTH_SHORT).show();
-    }
 }

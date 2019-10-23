@@ -65,7 +65,7 @@ public class RecycledViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((RecycledViewAdapter.ViewHolder)holder).getTextViewDay().setText(dataSource[position].day);
         ((RecycledViewAdapter.ViewHolder)holder).getTextView().setText(dataSource[position].temperature);
-        int resId = App.getContext().getResources().getIdentifier("com.pavelekozhevnikov.homework1:drawable/" + dataSource[position].icon, null, null);
+        int resId = App.getInstance().getResources().getIdentifier("com.pavelekozhevnikov.homework1:drawable/" + dataSource[position].icon, null, null);
         if(resId>0)
             ((RecycledViewAdapter.ViewHolder)holder).getImageView().setImageResource(resId);
     }

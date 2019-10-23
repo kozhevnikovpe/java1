@@ -1,10 +1,9 @@
 package com.pavelekozhevnikov.homework1.Fragment;
 
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
+import com.pavelekozhevnikov.homework1.Model.WeatherUpdaterThread;
 import com.pavelekozhevnikov.homework1.R;
 import com.pavelekozhevnikov.homework1.WeatherActivityFragment;
 
@@ -32,6 +30,9 @@ public class CitiesFragment extends Fragment {
     private WeatherInfo currentWeatherInfo;
     private ListView listView;
     private TextView textView;
+    Handler handler = new Handler();
+
+    private Bundle instanceState = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,15 +60,13 @@ public class CitiesFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentWeatherInfo = new WeatherInfo(position, Objects.requireNonNull(getActivity()));
-                //showWeather(currentWeatherInfo);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Snackbar.make(view, String.format(getString(R.string.cityConfirmation), listView.getItemAtPosition(position).toString()), Snackbar.LENGTH_LONG)
                         .setAction(getString(R.string.confirmBtn), new View.OnClickListener(){
 
                             @Override
                             public void onClick(View v) {
-                                showWeather(currentWeatherInfo);
+                                new WeatherUpdaterThread(handler, getActivity(), listView.getItemAtPosition(position).toString()).start();
                             }
                         }).show();
 
@@ -78,27 +77,30 @@ public class CitiesFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        isExistWeatherFrame = getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
-
-        // Если это не первое создание, то восстановим текущую позицию
-        if (savedInstanceState != null) {
-            // Восстановление текущей позиции.
-            currentWeatherInfo = (WeatherInfo) savedInstanceState.getSerializable(WEATHER_INFO);
-        }else{
-            currentWeatherInfo = new WeatherInfo(0, Objects.requireNonNull(getActivity()));
-        }
-
-        if (isExistWeatherFrame) {
-            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showWeather(currentWeatherInfo);
-        }
+        instanceState = savedInstanceState;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        isExistWeatherFrame = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+
+        // Если это не первое создание, то восстановим текущую позицию
+        if (instanceState != null) {
+            // Восстановление текущей позиции.
+            currentWeatherInfo = (WeatherInfo) instanceState.getSerializable(WEATHER_INFO);
+        }
+        if (isExistWeatherFrame && currentWeatherInfo==null) {
+            new WeatherUpdaterThread(handler, getActivity(), listView.getItemAtPosition(0).toString()).start();
+            listView.setItemChecked(0,true);
+        }
+
+        if (isExistWeatherFrame) {
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            if(currentWeatherInfo!=null)
+                showWeather(currentWeatherInfo);
+        }
     }
 
     // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
@@ -110,15 +112,17 @@ public class CitiesFragment extends Fragment {
 
     // Показать погоду. Ecли возможно, то показать рядом со списком,
     // если нет, то открыть вторую activity
-    private void showWeather(WeatherInfo weatherInfo) {
+    public void showWeather(WeatherInfo weatherInfo) {
+        currentWeatherInfo = weatherInfo;
         if (isExistWeatherFrame) {
             listView.setItemChecked(weatherInfo.cityId,true);
+
             // Проверим, что фрагмент с погодой существует в activity
             WeatherFragment detail = (WeatherFragment)
                     Objects.requireNonNull(getFragmentManager()).findFragmentById(R.id.weather_frame);
 
             // Если есть необходимость, то выведем погоду
-            if (detail == null || detail.getWeatherInfo().cityId != weatherInfo.cityId) {
+            if (detail == null || !detail.getWeatherInfo().cityName.equals(weatherInfo.cityName)) {
                 // Создаем новый фрагмент с текущей позицией для вывода погоды
                 detail = WeatherFragment.create(weatherInfo);
 

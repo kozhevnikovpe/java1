@@ -18,19 +18,31 @@
             android:id="@+id/cityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:textSize="30sp"
+            android:layout_marginBottom="@dimen/weatherParamMargin"
+            android:textSize="@dimen/cityFontSize"
             android:layout_gravity="center_horizontal"
             tools:text="city"
             style="@style/whiteBigText"
             />
 
         <TextView
+            android:id="@+id/iconLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/weatherParamMargin"
+            android:textSize="@dimen/weatherIconFontSize"
+            android:layout_gravity="center_horizontal"
+            tools:text="temp"
+            style="@style/whiteBigText"
+            android:fontFamily="@android:"
+            />
+
+        <TextView
             android:id="@+id/temperatureLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/weatherParamMargin"
+            android:textSize="@dimen/weatherParamFontSize"
             android:layout_gravity="center_horizontal"
             tools:text="temp"
             style="@style/whiteBigText"
@@ -40,10 +52,10 @@
             android:id="@+id/humidityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/weatherParamMargin"
+            android:textSize="@dimen/weatherParamFontSize"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:text="hum"
             tools:visibility="visible"
             style="@style/whiteBigText" />
@@ -52,10 +64,21 @@
             android:id="@+id/windLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/weatherParamMargin"
+            android:textSize="@dimen/weatherParamFontSize"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
+            tools:text="wind"
+            tools:visibility="visible"
+            style="@style/whiteBigText" />
+
+        <TextView
+            android:id="@+id/pressureLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/weatherParamMargin"
+            android:textSize="@dimen/weatherParamFontSize"
+            android:layout_gravity="center_horizontal"
             tools:text="wind"
             tools:visibility="visible"
             style="@style/whiteBigText" />
@@ -66,7 +89,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
