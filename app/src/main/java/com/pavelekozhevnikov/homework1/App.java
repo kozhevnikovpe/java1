@@ -1,7 +1,6 @@
 package com.pavelekozhevnikov.homework1;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class App extends Application {
+import androidx.multidex.MultiDexApplication;
+
+public class App extends MultiDexApplication {
     public boolean isDarkTheme=false;
 
     public static App getInstance() {

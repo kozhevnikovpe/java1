@@ -22,7 +22,7 @@ class WeatherDataLoader {
     private static final String OPEN_WEATHER_API_URL_BY_NAME =
             "https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid="+OPEN_WEATHER_API_KEY;
     private static final String OPEN_WEATHER_API_URL_BY_COORDS =
-            "http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=metric&appid="+OPEN_WEATHER_API_KEY;
+            "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=metric&appid="+OPEN_WEATHER_API_KEY;
     private static final String KEY = "x-api-key";
     private static final String RESPONSE = "cod";
     private static final int ALL_GOOD = 200;

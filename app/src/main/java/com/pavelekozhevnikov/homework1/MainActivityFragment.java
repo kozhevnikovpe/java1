@@ -44,6 +44,7 @@ public class MainActivityFragment extends BaseThemeActivity {
         locator.setOnGotLocationEventListener(new OnGotLocationEventListener() {
             @Override
             public void onGotLocation() {
+                matButton.setVisibility(View.VISIBLE);
                 matButton.setText(R.string.locationDetected);
             }
         });

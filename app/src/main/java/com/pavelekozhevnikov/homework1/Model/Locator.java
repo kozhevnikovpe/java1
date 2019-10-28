@@ -1,6 +1,7 @@
 package com.pavelekozhevnikov.homework1.Model;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,7 +12,9 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.pavelekozhevnikov.homework1.R;
 
 public class Locator implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
@@ -37,15 +40,23 @@ public class Locator implements GoogleApiClient.ConnectionCallbacks, GoogleApiCl
 
         if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
-            lat = lastLocation.getLatitude();
-            lon = lastLocation.getLongitude();
-
-            if(mOnGotLocationEventListener != null)
-            {
-                mOnGotLocationEventListener.onGotLocation();
-            }
+            //Location lastLocation = LocationServices.FusedLocationApi getLastLocation(googleApiClient);
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+            mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations, this can be null.
+                        if (location != null) {
+                            lat = location.getLatitude();
+                            lon = location.getLongitude();
+                            if(mOnGotLocationEventListener != null)
+                            {
+                                mOnGotLocationEventListener.onGotLocation();
+                            }
+                        }
+                    }
+                });
         }
     }
 
