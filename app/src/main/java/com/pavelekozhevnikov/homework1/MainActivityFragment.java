@@ -10,19 +10,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.pavelekozhevnikov.homework1.Model.Locator;
 import com.pavelekozhevnikov.homework1.Model.OnGotLocationEventListener;
 import com.pavelekozhevnikov.homework1.Model.WeatherUpdaterThread;
 
 
-public class MainActivityFragment extends BaseThemeActivity {
+public class MainActivityFragment extends BaseThemeActivity implements NavigationView.OnNavigationItemSelectedListener  {
     MaterialButton matButton;
     FloatingActionButton fab;
     Locator locator;
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
+
     private final Handler handler = new Handler();
 
     private static final int PERMISSION_ACCESS_COARSE_LOCATION = 1;
@@ -33,6 +42,8 @@ public class MainActivityFragment extends BaseThemeActivity {
         setContentView(R.layout.activity_main_toolbar);
 
         initViews();
+
+        initSideMenu();
 
         getPerissions();
 
@@ -99,6 +110,20 @@ public class MainActivityFragment extends BaseThemeActivity {
                 toggleTheme();
             }
         });
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    private void initSideMenu() {
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -112,8 +137,14 @@ public class MainActivityFragment extends BaseThemeActivity {
 
         int id = item.getItemId();
 
-        if (id == R.id.action_developer) {
-            Intent intent = new Intent(this,TestActivity.class);
+        if (id == R.id.menu_add) {
+            Toast.makeText(this, R.string.add_city, Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (id == R.id.menu_location) {
+            new WeatherUpdaterThread(handler,MainActivityFragment.this,locator.lat,locator.lon).start();
+            return true;
+        }else if (id == R.id.menu_sensor) {
+            Intent intent = new Intent(this,SensorActivity.class);
             this.startActivity(intent);
             return true;
         }
@@ -121,4 +152,19 @@ public class MainActivityFragment extends BaseThemeActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        if (id == R.id.nav_help) {
+            Toast.makeText(this, R.string.help, Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_developer) {
+            Toast.makeText(this, R.string.developer, Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_feedback) {
+            Toast.makeText(this, R.string.feedback, Toast.LENGTH_SHORT).show();
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

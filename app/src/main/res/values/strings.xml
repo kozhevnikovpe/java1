@@ -32,7 +32,7 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="empty" translatable="false">Empty</string>
     <string name="dateFormat" translatable="false">EEE, d MMM</string>
-    <string name="cityConfirmation">Wanna know wheather in %s?</string>
+    <string name="cityConfirmation">Want to know wheather in %s?</string>
     <string name="confirmBtn">Confirm</string>
     <string name="theme" translatable="false">theme</string>
     <string name="developer">Developer</string>
@@ -67,4 +67,18 @@
     <string name="weather_drizzle" translatable="false">&#xf01c;</string>
     <string name="errGoogleConnectionSusspended">connection susspended</string>
     <string name="locationDetected">Location detected</string>
+
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="feedback">Обратная связь</string>
+    <string name="just_a_test">Just a test</string>
+    <string name="help">Help</string>
+    <string name="add_city">Add city</string>
+    <string name="description">Description</string>
+    <string name="have_a_nice_day">Have a nice day!</string>
+    <string name="communicate">Communicate</string>
+    <string name="my_location">My location</string>
+    <string name="show_sensors">Show sensor data</string>
+    <string name="no_humidity">Humidity sensor not found</string>
+    <string name="no_temperrature">Temperature sensor not found</string>
 </resources>

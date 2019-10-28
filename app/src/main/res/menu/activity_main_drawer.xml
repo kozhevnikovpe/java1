@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:checkable="true"
+        android:id="@+id/nav_help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/help" />
+
+    <group>
+        <item android:title="@string/communicate">
+            <menu>
+                <item
+                    android:checkable="true"
+                    android:id="@+id/nav_developer"
+                    android:icon="@android:drawable/ic_menu_manage"
+                    android:title="@string/developer" />
+                <item
+                    android:checkable="true"
+                    android:id="@+id/nav_feedback"
+                    android:icon="@android:drawable/ic_menu_send"
+                    android:title="@string/feedback" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

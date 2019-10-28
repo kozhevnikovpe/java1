@@ -35,4 +35,15 @@
     <string name="place_not_found">Город не найден</string>
     <string name="errGoogleConnectionSusspended">connection susspended</string>
     <string name="locationDetected">Локация определена</string>
+    <string name="feedback">Feedback</string>
+    <string name="just_a_test">Just a test</string>
+    <string name="help">Помощь</string>
+    <string name="add_city">Добавить город</string>
+    <string name="description">Description</string>
+    <string name="have_a_nice_day">Хорошего дня!</string>
+    <string name="communicate">Сообщение</string>
+    <string name="my_location">Определить геопозицию</string>
+    <string name="show_sensors">Данные сенсоров</string>
+    <string name="no_humidity">Humidity sensor not found</string>
+    <string name="no_temperrature">Temperature sensor not found</string>
 </resources>
