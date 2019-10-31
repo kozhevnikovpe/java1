@@ -17,7 +17,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-class WeatherDataLoader {
+public class WeatherDataLoader {
     private static final String OPEN_WEATHER_API_KEY = "e45d30c42c463b84b938477f1153ebc3";
     private static final String OPEN_WEATHER_API_URL_BY_NAME =
             "https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid="+OPEN_WEATHER_API_KEY;
@@ -54,7 +54,7 @@ class WeatherDataLoader {
         }
     }
 
-    JSONObject getJSONData(String city) {
+    public JSONObject getJSONData(String city) {
         try {
             URL url = new URL(String.format(OPEN_WEATHER_API_URL_BY_NAME, city));
             return loadJSONData(url);
@@ -64,7 +64,7 @@ class WeatherDataLoader {
         return null;
     }
 
-    JSONObject getJSONData(double lat, double lon) {
+   public JSONObject getJSONData(double lat, double lon) {
         try {
             @SuppressLint("DefaultLocale") URL url = new URL(String.format(OPEN_WEATHER_API_URL_BY_COORDS, lat, lon));
             return loadJSONData(url);
@@ -74,7 +74,7 @@ class WeatherDataLoader {
         return null;
     }
 
-    WeatherInfo parseJSONData(JSONObject jsonObject){
+    public WeatherInfo parseJSONData(JSONObject jsonObject){
         if(jsonObject==null)
             return null;
         WeatherInfo weather = new WeatherInfo();

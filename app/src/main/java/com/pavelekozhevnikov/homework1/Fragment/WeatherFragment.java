@@ -1,11 +1,9 @@
 package com.pavelekozhevnikov.homework1.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ public class WeatherFragment extends Fragment {
 
     static WeatherFragment create(WeatherInfo weatherInfo) {
         WeatherFragment f = new WeatherFragment();
-
         Bundle args = new Bundle();
         args.putSerializable(WEATHER_INFO, weatherInfo);
         f.setArguments(args);
@@ -41,15 +38,12 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupCity(view);
         setupTemperature(view);
         setupHumidity(view);
         setupWind(view);
         setupPressure(view);
         setupIcon(view);
-        //initRecyclerView(view);
-
         initViews(view);
         initFonts();
     }
@@ -98,34 +92,5 @@ public class WeatherFragment extends Fragment {
         TextView cityLabel = view.findViewById(R.id.cityLabel);
         cityLabel.setText(weatherInfo.cityName);
     }
-
-    /*private WeatherCardInfo[] getFutureWeatherInfo(){
-        String[] wTemperature = Objects.requireNonNull(getActivity()).getResources().getStringArray(R.array.w_temperature);
-        String[] wTIcons = getActivity().getResources().getStringArray(R.array.w_icons);
-        WeatherCardInfo[] result = new WeatherCardInfo[wTemperature.length];
-
-        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat(getActivity().getResources().getString(R.string.dateFormat));
-        for(int $i=0; $i<wTemperature.length; $i++) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_YEAR, $i);
-            Date date = calendar.getTime();
-            String icon = wTemperature.length==wTIcons.length?wTIcons[$i]:null;
-            result[$i] = new WeatherCardInfo(dateFormat.format(date),wTemperature[$i], icon);
-        }
-        return result;
-    }
-
-    private void initRecyclerView(View view){
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
-        // Эта установка служит для повышения производительности системы
-        recyclerView.setHasFixedSize(true);
-
-        // Установим адаптер
-        RecycledViewAdapter adapter = new RecycledViewAdapter(getFutureWeatherInfo());
-        recyclerView.setAdapter(adapter);
-    }*/
 
 }

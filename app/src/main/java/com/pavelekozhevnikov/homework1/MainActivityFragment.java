@@ -40,13 +40,9 @@ public class MainActivityFragment extends BaseThemeActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_toolbar);
-
         initViews();
-
         initSideMenu();
-
         getPerissions();
-
         initLocator();
     }
 
