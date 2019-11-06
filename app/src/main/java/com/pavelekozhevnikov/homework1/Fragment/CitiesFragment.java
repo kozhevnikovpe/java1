@@ -1,6 +1,11 @@
 package com.pavelekozhevnikov.homework1.Fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,10 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.material.snackbar.Snackbar;
+import com.pavelekozhevnikov.homework1.App;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.Model.WeatherUpdaterThread;
 import com.pavelekozhevnikov.homework1.R;
+import com.pavelekozhevnikov.homework1.Service.WeatherService;
 import com.pavelekozhevnikov.homework1.WeatherActivityFragment;
 
 import java.util.Objects;
@@ -30,9 +38,10 @@ public class CitiesFragment extends Fragment {
     private WeatherInfo currentWeatherInfo;
     private ListView listView;
     private TextView textView;
-    Handler handler = new Handler();
-
+    private Handler handler = new Handler();
+    private BroadcastReceiver mMessageReceiver;
     private Bundle instanceState = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +54,25 @@ public class CitiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initList();
+        initReceiver();
+        if(App.getInstance().isFirstRun()) {
+            runWeatherInCityActivity(App.getInstance().getSharedPrefs().getInt("selectedCity", 0));
+            App.getInstance().setFirstRun(false);
+        }
+    }
+
+    private void initReceiver() {
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra("weatherInfo");
+                if(weatherInfo!=null)
+                    showWeather(weatherInfo);
+                else{
+                    App.getInstance().warning(R.string.place_not_found, getActivity());
+                }
+            }
+        };
     }
 
     private void initViews(View view){
@@ -66,12 +94,22 @@ public class CitiesFragment extends Fragment {
 
                             @Override
                             public void onClick(View v) {
-                                new WeatherUpdaterThread(handler, getActivity(), listView.getItemAtPosition(position).toString()).start();
+                                SharedPreferences.Editor editor = App.getInstance().getSharedPrefs().edit();
+                                editor.putInt("selectedCity", position);
+                                runWeatherInCityActivity(position);
+                                editor.commit();
                             }
                         }).show();
 
             }
         });
+    }
+
+    private void runWeatherInCityActivity(int position) {
+        //new WeatherUpdaterThread(handler, getActivity(), listView.getItemAtPosition(position).toString()).start();
+        Intent intent = new Intent(getActivity(), WeatherService.class);
+        intent.putExtra("city", listView.getItemAtPosition(position).toString());
+        Objects.requireNonNull(getActivity()).startService(intent);
     }
 
     @Override
@@ -80,9 +118,14 @@ public class CitiesFragment extends Fragment {
         instanceState = savedInstanceState;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+
+        getActivity().registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_FAILED));
+        getActivity().registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_SUCCESS));
+
         isExistWeatherFrame = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
 
@@ -101,6 +144,11 @@ public class CitiesFragment extends Fragment {
             if(currentWeatherInfo!=null)
                 showWeather(currentWeatherInfo);
         }
+    }
+
+    public void onPause() {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).unregisterReceiver(mMessageReceiver);
+        super.onPause();
     }
 
     // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
