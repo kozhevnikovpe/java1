@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.material.snackbar.Snackbar;
+import com.pavelekozhevnikov.homework1.App;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.Model.WeatherUpdaterThread;
 import com.pavelekozhevnikov.homework1.R;
@@ -59,6 +60,9 @@ public class CitiesFragment extends Fragment {
                 WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra("weatherInfo");
                 if(weatherInfo!=null)
                     showWeather(weatherInfo);
+                else{
+                    App.getInstance().warning(R.string.place_not_found, getActivity());
+                }
             }
         };
     }
@@ -104,8 +108,10 @@ public class CitiesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_FAILED));
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_SUCCESS));
+        getActivity().registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_FAILED));
+        getActivity().registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_SUCCESS));
+        /*LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_FAILED));
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_SUCCESS));*/
 
         isExistWeatherFrame = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
@@ -128,7 +134,7 @@ public class CitiesFragment extends Fragment {
     }
 
     public void onPause() {
-        //LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).unregisterReceiver(mMessageReceiver);
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).unregisterReceiver(mMessageReceiver);
         super.onPause();
     }
 

@@ -66,7 +66,7 @@ public class WeatherService extends IntentService {
             }
         }else{
             Intent broadcastIntent = new Intent(BROADCAST_ACTION_FAILED);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+            /*LocalBroadcastManager.getInstance(this).*/sendBroadcast(broadcastIntent);
         }
     }
 
