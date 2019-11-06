@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,7 @@ import com.pavelekozhevnikov.homework1.Service.WeatherService;
 import com.pavelekozhevnikov.homework1.WeatherActivityFragment;
 
 import java.util.Objects;
+
 import static com.pavelekozhevnikov.homework1.Fragment.WeatherFragment.WEATHER_INFO;
 
 public class CitiesFragment extends Fragment {
@@ -38,6 +41,7 @@ public class CitiesFragment extends Fragment {
     private Handler handler = new Handler();
     private BroadcastReceiver mMessageReceiver;
     private Bundle instanceState = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +55,10 @@ public class CitiesFragment extends Fragment {
         initViews(view);
         initList();
         initReceiver();
+        if(App.getInstance().isFirstRun()) {
+            runWeatherInCityActivity(App.getInstance().getSharedPrefs().getInt("selectedCity", 0));
+            App.getInstance().setFirstRun(false);
+        }
     }
 
     private void initReceiver() {
@@ -86,15 +94,22 @@ public class CitiesFragment extends Fragment {
 
                             @Override
                             public void onClick(View v) {
-                                //new WeatherUpdaterThread(handler, getActivity(), listView.getItemAtPosition(position).toString()).start();
-                                Intent intent = new Intent(getActivity(), WeatherService.class);
-                                intent.putExtra("city", listView.getItemAtPosition(position).toString());
-                                Objects.requireNonNull(getActivity()).startService(intent);
+                                SharedPreferences.Editor editor = App.getInstance().getSharedPrefs().edit();
+                                editor.putInt("selectedCity", position);
+                                runWeatherInCityActivity(position);
+                                editor.commit();
                             }
                         }).show();
 
             }
         });
+    }
+
+    private void runWeatherInCityActivity(int position) {
+        //new WeatherUpdaterThread(handler, getActivity(), listView.getItemAtPosition(position).toString()).start();
+        Intent intent = new Intent(getActivity(), WeatherService.class);
+        intent.putExtra("city", listView.getItemAtPosition(position).toString());
+        Objects.requireNonNull(getActivity()).startService(intent);
     }
 
     @Override
@@ -110,8 +125,6 @@ public class CitiesFragment extends Fragment {
 
         getActivity().registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_FAILED));
         getActivity().registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_SUCCESS));
-        /*LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_FAILED));
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(mMessageReceiver, new IntentFilter(WeatherService.BROADCAST_ACTION_SUCCESS));*/
 
         isExistWeatherFrame = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;

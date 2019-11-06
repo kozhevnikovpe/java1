@@ -8,14 +8,15 @@ import com.pavelekozhevnikov.homework1.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class WeatherDataLoader {
     private static final String OPEN_WEATHER_API_KEY = "e45d30c42c463b84b938477f1153ebc3";
@@ -29,20 +30,13 @@ public class WeatherDataLoader {
 
     private JSONObject loadJSONData(URL url){
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.addRequestProperty(KEY, OPEN_WEATHER_API_KEY);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder rawData = new StringBuilder(1024);
-            String tempVariable;
-
-            while ((tempVariable = reader.readLine()) != null) {
-                rawData.append(tempVariable).append("\n");
-            }
-
-            reader.close();
-
-            JSONObject jsonObject = new JSONObject(rawData.toString());
+            final OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url.toString())
+                    .header(KEY, OPEN_WEATHER_API_KEY)
+                    .build();
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
             if(jsonObject.getInt(RESPONSE) != ALL_GOOD) {
                 return null;
             } else {

@@ -1,7 +1,7 @@
 package com.pavelekozhevnikov.homework1;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,21 @@ import androidx.multidex.MultiDexApplication;
 
 public class App extends MultiDexApplication {
     public boolean isDarkTheme=false;
+    SharedPreferences sharedPrefs;
+
+    public boolean isFirstRun() {
+        return isFirstRun;
+    }
+
+    public void setFirstRun(boolean firstRun) {
+        isFirstRun = firstRun;
+    }
+
+    private boolean isFirstRun=true;
+
+    public SharedPreferences getSharedPrefs() {
+        return sharedPrefs;
+    }
 
     public static App getInstance() {
         return instance;
@@ -27,10 +42,6 @@ public class App extends MultiDexApplication {
         instance = this;
     }
 
-    public static Context getContext() {
-        return instance;
-    }
-
     public void warning(int messageId, Activity activity){
         Toast toast = Toast.makeText(this, messageId,
                 Toast.LENGTH_SHORT);
@@ -42,4 +53,9 @@ public class App extends MultiDexApplication {
         toast.show();
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sharedPrefs = getSharedPreferences("weather",MODE_PRIVATE);
+    }
 }
