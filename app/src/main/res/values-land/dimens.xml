@@ -2,6 +2,6 @@
 <resources>
     <dimen name="cityFontSize">25sp</dimen>
     <dimen name="weatherIconFontSize">30dp</dimen>
-    <dimen name="weatherParamFontSize">15dp</dimen>
+    <dimen name="weatherParamFontSize">15sp</dimen>
     <dimen name="weatherParamMargin">15dp</dimen>
 </resources>

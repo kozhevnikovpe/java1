@@ -25,17 +25,14 @@
             style="@style/whiteBigText"
             />
 
-        <TextView
-            android:id="@+id/iconLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/weatherParamMargin"
-            android:textSize="@dimen/weatherIconFontSize"
+        <ImageView
+            android:id="@+id/iconView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            tools:text="temp"
-            style="@style/whiteBigText"
-            android:fontFamily="@android:"
-            />
+            tools:src="@tools:sample/avatars[1]"
+            tools:text="icon"
+            android:layout_marginBottom="@dimen/weatherParamMargin" />
 
         <TextView
             android:id="@+id/temperatureLabel"

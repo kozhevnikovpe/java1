@@ -14,18 +14,13 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-
         boolean needHumidity = Objects.requireNonNull(getIntent().getExtras()).getBoolean(String.valueOf(R.string.humidityParam));
         boolean needWind = getIntent().getExtras().getBoolean(String.valueOf(R.string.windParam));
-
         setupCity();
-
         setupTemperature();
-
         if(needHumidity) {
             setupHumidity();
         }
-
         if(needWind) {
             setupWind();
         }

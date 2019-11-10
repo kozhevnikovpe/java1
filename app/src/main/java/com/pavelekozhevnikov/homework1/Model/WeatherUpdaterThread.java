@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.pavelekozhevnikov.homework1.App;
 import com.pavelekozhevnikov.homework1.Fragment.CitiesFragment;
 import com.pavelekozhevnikov.homework1.R;
+import com.pavelekozhevnikov.homework1.rest.entities.WeatherRequestRestModel;
 
 import org.json.JSONObject;
 
@@ -35,7 +36,7 @@ public class WeatherUpdaterThread extends Thread {
     @Override
     public void run() {
         WeatherDataLoader weatherDataLoader = new WeatherDataLoader();
-        JSONObject jsonObject;
+        WeatherRequestRestModel jsonObject;
         if(cityName!=null)
             jsonObject = weatherDataLoader.getJSONData(cityName);
         else

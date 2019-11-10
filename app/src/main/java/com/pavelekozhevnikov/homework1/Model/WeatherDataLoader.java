@@ -1,160 +1,78 @@
 package com.pavelekozhevnikov.homework1.Model;
-
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 
 import com.pavelekozhevnikov.homework1.R;
+import com.pavelekozhevnikov.homework1.rest.OpenWeatherRepo;
+import com.pavelekozhevnikov.homework1.rest.entities.WeatherRequestRestModel;
+import com.pavelekozhevnikov.homework1.rest.entities.WeatherRestModel;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
-class WeatherDataLoader {
+import retrofit2.Response;
+
+public class WeatherDataLoader {
     private static final String OPEN_WEATHER_API_KEY = "e45d30c42c463b84b938477f1153ebc3";
-    private static final String OPEN_WEATHER_API_URL_BY_NAME =
-            "https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid="+OPEN_WEATHER_API_KEY;
-    private static final String OPEN_WEATHER_API_URL_BY_COORDS =
-            "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=metric&appid="+OPEN_WEATHER_API_KEY;
-    private static final String KEY = "x-api-key";
-    private static final String RESPONSE = "cod";
-    private static final int ALL_GOOD = 200;
+    private static final String iconUrl = "https://openweathermap.org/img/wn/%s@2x.png";
 
-    private JSONObject loadJSONData(URL url){
+    public WeatherRequestRestModel getJSONData(String city) {
+        Response response = null;
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.addRequestProperty(KEY, OPEN_WEATHER_API_KEY);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder rawData = new StringBuilder(1024);
-            String tempVariable;
-
-            while ((tempVariable = reader.readLine()) != null) {
-                rawData.append(tempVariable).append("\n");
-            }
-
-            reader.close();
-
-            JSONObject jsonObject = new JSONObject(rawData.toString());
-            if(jsonObject.getInt(RESPONSE) != ALL_GOOD) {
-                return null;
-            } else {
-                return jsonObject;
-            }
-        } catch (Exception exc) {
-            exc.printStackTrace();
+            response = OpenWeatherRepo.getSingleton().getAPI().loadWeather(city + ",ru",
+                    OPEN_WEATHER_API_KEY, "metric").execute( );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (Objects.requireNonNull(response).body() != null && response.isSuccessful()) {
+            return (WeatherRequestRestModel)response.body();
+        }else{
             return null;
         }
     }
 
-    JSONObject getJSONData(String city) {
-        try {
-            URL url = new URL(String.format(OPEN_WEATHER_API_URL_BY_NAME, city));
-            return loadJSONData(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
+   public WeatherRequestRestModel getJSONData(double lat, double lon) {
+       Response response = null;
+       try {
+           response = OpenWeatherRepo.getSingleton().getAPI().loadWeather(lat, lon,
+                   OPEN_WEATHER_API_KEY, "metric").execute( );
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       if (Objects.requireNonNull(response).body() != null && response.isSuccessful()) {
+           return (WeatherRequestRestModel)response.body();
+       }else{
+           return null;
+       }
     }
 
-    JSONObject getJSONData(double lat, double lon) {
-        try {
-            @SuppressLint("DefaultLocale") URL url = new URL(String.format(OPEN_WEATHER_API_URL_BY_COORDS, lat, lon));
-            return loadJSONData(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    WeatherInfo parseJSONData(JSONObject jsonObject){
+    public WeatherInfo parseJSONData(WeatherRequestRestModel jsonObject){
         if(jsonObject==null)
             return null;
         WeatherInfo weather = new WeatherInfo();
         try {
-            JSONObject details = jsonObject.getJSONArray("weather").getJSONObject(0);
-            JSONObject main = jsonObject.getJSONObject("main");
-            JSONObject wind = jsonObject.getJSONObject("wind");
+            WeatherRestModel details = jsonObject.weather[0];
 
-            weather.cityName = jsonObject.getString("name").toUpperCase() + ", "
-                    + jsonObject.getJSONObject("sys").getString("country");
-
-            weather.humidity = main.getString("humidity") + "%";
-
-            weather.pressure =  main.getString("pressure") + "hPa";
-
-            weather.wind =  wind.getString("speed") + "m/s";
-
-            weather.text = details.getString("description").toUpperCase();
-
-            weather.date = getUpdatedDate(jsonObject);
-
+            weather.cityName = jsonObject.name.toUpperCase() + ", "
+                    + jsonObject.sys.country;
+            weather.humidity = jsonObject.main.humidity + "%";
+            weather.pressure =  jsonObject.main.pressure + "hPa";
+            weather.wind =  jsonObject.wind.speed + "m/s";
+            weather.text = details.description.toUpperCase();
+            weather.date = getUpdatedDate(jsonObject.dt);
             weather.temperature = String.format(Locale.getDefault(), "%.2f",
-                    main.getDouble("temp")) + "\u2103";
-
-            weather.icon = getWeatherIcon(details.getInt("id"),
-                    jsonObject.getJSONObject("sys").getLong("sunrise") * 1000,
-                    jsonObject.getJSONObject("sys").getLong("sunset") * 1000);
+                    jsonObject.main.temp) + "\u2103";
+            weather.icon = String.format(iconUrl,details.icon);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
         return weather;
     }
 
-    private String getUpdatedDate(JSONObject jsonObject) throws JSONException {
+    private String getUpdatedDate(long dt){
         DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        return dateFormat.format(new Date(jsonObject.getLong("dt") * 1000));
+        return dateFormat.format(new Date(dt * 1000));
     }
-
-    private String getWeatherIcon(int actualId, long sunrise, long sunset) {
-        int id = actualId / 100;
-        String icon = "";
-
-        if(actualId == 800) {
-            long currentTime = new Date().getTime();
-            if(currentTime >= sunrise && currentTime < sunset) {
-                icon = "\u2600";
-                //icon = getString(R.string.weather_sunny);
-            } else {
-                icon = Resources.getSystem().getString(R.string.weather_clear_night);
-            }
-        } else {
-            switch (id) {
-                case 2: {
-                    icon = Resources.getSystem().getString(R.string.weather_thunder);
-                    break;
-                }
-                case 3: {
-                    icon = Resources.getSystem().getString(R.string.weather_drizzle);
-                    break;
-                }
-                case 5: {
-                    icon = Resources.getSystem().getString(R.string.weather_rainy);
-                    break;
-                }
-                case 6: {
-                    icon = Resources.getSystem().getString(R.string.weather_snowy);
-                    break;
-                }
-                case 7: {
-                    icon = Resources.getSystem().getString(R.string.weather_foggy);
-                    break;
-                }
-                case 8: {
-                    icon = "\u2601";
-                    // icon = getString(R.string.weather_cloudy);
-                    break;
-                }
-            }
-        }
-        return icon;
-    }
-
 }
