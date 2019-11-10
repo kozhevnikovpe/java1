@@ -13,6 +13,7 @@ import com.pavelekozhevnikov.homework1.App;
 import com.pavelekozhevnikov.homework1.Model.WeatherDataLoader;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.R;
+import com.pavelekozhevnikov.homework1.rest.entities.WeatherRequestRestModel;
 
 import org.json.JSONObject;
 
@@ -40,7 +41,7 @@ public class WeatherService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         WeatherDataLoader weatherDataLoader = new WeatherDataLoader();
-        JSONObject jsonObject=null;
+        WeatherRequestRestModel jsonObject=null;
         String city = Objects.requireNonNull(intent).getStringExtra("city");
         if(city!=null) {
             jsonObject = weatherDataLoader.getJSONData(city);

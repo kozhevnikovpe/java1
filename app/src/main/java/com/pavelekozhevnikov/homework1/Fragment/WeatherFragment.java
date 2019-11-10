@@ -1,5 +1,4 @@
 package com.pavelekozhevnikov.homework1.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,15 +6,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.pavelekozhevnikov.homework1.Model.WeatherInfo;
 import com.pavelekozhevnikov.homework1.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 public class WeatherFragment extends Fragment {
     static final String WEATHER_INFO = "weatherInfo";
-    private TextView iconLabel;
 
     static WeatherFragment create(WeatherInfo weatherInfo) {
         WeatherFragment f = new WeatherFragment();
@@ -44,17 +44,6 @@ public class WeatherFragment extends Fragment {
         setupWind(view);
         setupPressure(view);
         setupIcon(view);
-        initViews(view);
-        initFonts();
-    }
-
-    private void initViews(View view) {
-        iconLabel = view.findViewById(R.id.iconLabel);
-    }
-
-    private void initFonts() {
-        Typeface weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/weather.ttf");
-        iconLabel.setTypeface(weatherFont);
     }
 
     private void setupWind(View view) {
@@ -83,8 +72,11 @@ public class WeatherFragment extends Fragment {
 
     private void setupIcon(View view) {
         WeatherInfo weatherInfo = getWeatherInfo();
-        TextView temperatureLabel = view.findViewById(R.id.iconLabel);
-        temperatureLabel.setText(weatherInfo.icon);
+        ImageView iconView = view.findViewById(R.id.iconView);
+        Picasso.get()
+                .load(weatherInfo.icon)
+                .fit()
+                .into(iconView);
     }
 
     private void setupCity(View view) {

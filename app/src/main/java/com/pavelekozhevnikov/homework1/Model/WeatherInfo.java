@@ -1,9 +1,5 @@
 package com.pavelekozhevnikov.homework1.Model;
 
-import android.content.Context;
-
-import com.pavelekozhevnikov.homework1.R;
-
 import java.io.Serializable;
 
 public class WeatherInfo implements Serializable {

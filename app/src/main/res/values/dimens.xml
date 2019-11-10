@@ -6,6 +6,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="cityFontSize">30sp</dimen>
     <dimen name="weatherIconFontSize">50dp</dimen>
-    <dimen name="weatherParamFontSize">20dp</dimen>
+    <dimen name="weatherParamFontSize">20sp</dimen>
     <dimen name="weatherParamMargin">20dp</dimen>
 </resources>
